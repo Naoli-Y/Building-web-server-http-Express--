@@ -41,7 +41,23 @@ const { readdir, mkdir, readFile, writeFile } = require("fs");
 //  });
 
 
- writeFile("message.txt", "Hello class", (err) => {
-    if (err) throw err;
-    console.log("The file has been saved!");
- });
+//  writeFile("message.txt", "Hello class", (err) => {
+//     if (err) throw err;
+//     console.log("The file has been saved!");
+//  });
+
+
+// // // events core module example
+const events = require("events");
+const eventEmitter = new events.EventEmitter();
+
+// // create an event handler
+const myEventHandler = function () {
+    console.log("Abet, salam nw");
+};
+
+// // Assign the event handler to an event listener:
+eventEmitter.on("Abebe", myEventHandler);
+
+// // Fire/trigger he event:
+eventEmitter.emit("Abebe");
