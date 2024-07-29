@@ -23,6 +23,7 @@ var memo = os.freemem();
 // // // fileSystem core module example
 const { readdir, mkdir, readFile, writeFile } = require("fs");
 
+   // to see folder&file
 // readdir("./", (err, Files) => {
 //     if (err) console.log("error", err);
 //     else console.log(Files);
@@ -48,16 +49,18 @@ const { readdir, mkdir, readFile, writeFile } = require("fs");
 
 
 // // // events core module example
-const events = require("events");
-const eventEmitter = new events.EventEmitter();
+// const events = require("events");
+// const eventEmitter = new events.EventEmitter();
 
 // // create an event handler
-const myEventHandler = function () {
-    console.log("Abet, salam nw");
-};
+// const myEventHandler = function () {
+//     console.log("Abet, salam nw");
+// };
 
 // // Assign the event handler to an event listener:
-eventEmitter.on("Abebe", myEventHandler);
+// eventEmitter.on("Abebe", myEventHandler);
 
 // // Fire/trigger he event:
-eventEmitter.emit("Abebe");
+// eventEmitter.emit("Abebe");
+
+
