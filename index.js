@@ -1,6 +1,6 @@
 /// /// /// ******* Serving simple text with HTTP ************ /// /// ///
 
-const http = require("http");
+// const http = require("http");
 // console.log(http)
 
 // const myServer = http.createServer((req, res) => {
@@ -48,7 +48,7 @@ const http = require("http");
 
 const http = require("http");
 const fs = require("fs");
-// const url = require("url");
+
 
 const serverMyStaticSite = http.createServer((req, res) => {
    
@@ -56,16 +56,28 @@ const serverMyStaticSite = http.createServer((req, res) => {
     console.log("requested path >>> ", reqPath);
 
     if (reqPath === "/") {
-        reqPath = "/index.html"
+        reqPath = "/index.html";
     }
 
     let requestedFile = "./bob" + reqPath;
     console.log("requested file >>> ", requestedFile);
 
-    fs.readFilr(requestedFile, (err, content)) => {
+    fs.readFile(requestedFile, (err, content) => {
         
-    }
-})
+        if (err) {
+           requestedFile = "./bob/notFound.html";
+           fs.readFile(requestedFile, (err, content) => {
+            res.writeHead(200, {"content-type": "text/html" });
+            res.write(content);
+            res.end();
+           })
+        } else{
+            res.writeHead(200, {"content-type": "text/html"})
+            res.write(content);
+            res.end();
+        }
+    });
+});
 
 serverMyStaticSite.listen(5050, () => {
     console.log("Sevrver is running on PORT: http://localhost:5050");
