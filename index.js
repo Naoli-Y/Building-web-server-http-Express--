@@ -46,39 +46,76 @@
 
 /// /// /// ******** Serving static HTML file with HTTP ****** /// /// ///
 
+// const http = require("http");
+// const fs = require("fs");
+
+
+// const serverMyStaticSite = http.createServer((req, res) => {
+   
+//     let reqPath = req.url;
+//     console.log("requested path >>> ", reqPath);
+
+//     if (reqPath === "/") {
+//         reqPath = "/index.html";
+//     }
+
+//     let requestedFile = "./bob" + reqPath;
+//     console.log("requested file >>> ", requestedFile);
+
+//     fs.readFile(requestedFile, (err, content) => {
+        
+//         if (err) {
+//            requestedFile = "./bob/notFound.html";
+//            fs.readFile(requestedFile, (err, content) => {
+//             res.writeHead(200, {"content-type": "text/html" });
+//             res.write(content);
+//             res.end();
+//            })
+//         } else{
+//             res.writeHead(200, {"content-type": "text/html"})
+//             res.write(content);
+//             res.end();
+//         }
+//     });
+// });
+
+// serverMyStaticSite.listen(5050, () => {
+//     console.log("Sevrver is running on PORT: http://localhost:5050");
+// });
+
+
+
+/// /// /// ***** Serving static webdite with HTTP & the help of mime-types ***** /// /// ///
 const http = require("http");
 const fs = require("fs");
+const mimeTypes = require("mime-types").lookup;
 
+const puppyServer = http.createServer((req, res) => {
+    let filePath = req.url;
 
-const serverMyStaticSite = http.createServer((req, res) => {
-   
-    let reqPath = req.url;
-    console.log("requested path >>> ", reqPath);
-
-    if (reqPath === "/") {
-        reqPath = "/index.html";
+    if (filePath == "/") {
+        filePath = "/index.html";
     }
-
-    let requestedFile = "./bob" + reqPath;
-    console.log("requested file >>> ", requestedFile);
+    let requestedFile = "./Media-Query-Demo-project/" + filePath;
 
     fs.readFile(requestedFile, (err, content) => {
-        
         if (err) {
-           requestedFile = "./bob/notFound.html";
-           fs.readFile(requestedFile, (err, content) => {
-            res.writeHead(200, {"content-type": "text/html" });
-            res.write(content);
-            res.end();
-           })
-        } else{
-            res.writeHead(200, {"content-type": "text/html"})
-            res.write(content);
-            res.end();
+            // // Custom 404 page
+            filePath = "./Media-Query-Demo-project/notFound.html";
+
+            fs.readFile(filePath, function (err, contents) {
+
+                res.writeHead(404, { "Content-Type": mimeTypes(filePath) });
+                res.end(contents);
+            });  
+        } else {
+            res.writeHead(200, { "content-type": mimeTypes(filePath) });
+            res.end(content);
         }
     });
 });
 
-serverMyStaticSite.listen(5050, () => {
-    console.log("Sevrver is running on PORT: http://localhost:5050");
+const Puppy_PORT = 4000;
+puppyServer.listen(Puppy_PORT, () => {
+    console.log(`Server is running on PORT: http://localhost:${Puppy_PORT}`);
 });
