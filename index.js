@@ -86,36 +86,56 @@
 
 
 /// /// /// ***** Serving static webdite with HTTP & the help of mime-types ***** /// /// ///
-const http = require("http");
-const fs = require("fs");
-const mimeTypes = require("mime-types").lookup;
+// const http = require("http");
+// const fs = require("fs");
+// const mimeTypes = require("mime-types").lookup;
 
-const puppyServer = http.createServer((req, res) => {
-    let filePath = req.url;
+// const puppyServer = http.createServer((req, res) => {
+//     let filePath = req.url;
 
-    if (filePath == "/") {
-        filePath = "/index.html";
-    }
-    let requestedFile = "./Media-Query-Demo-project/" + filePath;
+//     if (filePath == "/") {
+//         filePath = "/index.html";
+//     }
+//     let requestedFile = "./Media-Query-Demo-project/" + filePath;
 
-    fs.readFile(requestedFile, (err, content) => {
-        if (err) {
-            // // Custom 404 page
-            filePath = "./Media-Query-Demo-project/notFound.html";
+//     fs.readFile(requestedFile, (err, content) => {
+//         if (err) {
+//             // // Custom 404 page
+//             filePath = "./Media-Query-Demo-project/notFound.html";
 
-            fs.readFile(filePath, function (err, contents) {
+//             fs.readFile(filePath, function (err, contents) {
 
-                res.writeHead(404, { "Content-Type": mimeTypes(filePath) });
-                res.end(contents);
-            });  
-        } else {
-            res.writeHead(200, { "content-type": mimeTypes(filePath) });
-            res.end(content);
-        }
-    });
+//                 res.writeHead(404, { "Content-Type": mimeTypes(filePath) });
+//                 res.end(contents);
+//             });  
+//         } else {
+//             res.writeHead(200, { "content-type": mimeTypes(filePath) });
+//             res.end(content);
+//         }
+//     });
+// });
+
+// const Puppy_PORT = 4000;
+// puppyServer.listen(Puppy_PORT, () => {
+//     console.log(`Server is running on PORT: http://localhost:${Puppy_PORT}`);
+// });
+
+
+/// /// // ***** Serving static website with Express ***** // /// ///
+const Express = require("express");
+const app = Express();
+
+// // sevring static site
+app.use(Express.static("Media-Query-Demo-project"));
+
+const PORT = 303;
+
+app.listen(PORT, (err) => {
+    if (err) console.log(err);
+    console.log(`server running on http://localhost:${PORT}`);
 });
 
-const Puppy_PORT = 4000;
-puppyServer.listen(Puppy_PORT, () => {
-    console.log(`Server is running on PORT: http://localhost:${Puppy_PORT}`);
+// // non existing routes
+app.get("*", (req, res) => {
+    res.sendFile(__dirname + "/Media-Query-Demo-project/notFound.html");
 });
